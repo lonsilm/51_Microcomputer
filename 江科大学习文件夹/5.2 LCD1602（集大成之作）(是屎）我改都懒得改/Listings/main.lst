@@ -1,0 +1,81 @@
+C51 COMPILER V9.60.7.0   MAIN                                                              10/01/2025 21:18:49 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: B:\keil5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main.l
+                    -st) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "LCD1602.h"
+   3          #include "Delay.h"
+   4          #include "STT View.h"
+   5          #include "Timer.h" // 你需要实现Timer函数
+   6          
+   7          void main()
+   8          {
+   9   1          int stt = 0;   // 0: Timer, 1: Birthday
+  10   1          int flag = 0;  // 0:主界面, 1:计时器界面
+  11   1      
+  12   1          LCD_Init();
+  13   1          stt_display1(); // 显示主界面（Timer）
+  14   1      
+  15   1          while(1)
+  16   1          {
+  17   2              if(flag == 0) // 主界面
+  18   2              {
+  19   3                  // 切换主界面显示内容
+  20   3                  if(P3_1 == 0)
+  21   3                  {
+  22   4                      Delay(20);
+  23   4                      if(P3_1 == 0)
+  24   4                      {
+  25   5                          while(P3_1 == 0); // 等待松手
+  26   5                          stt = !stt;
+  27   5                          if(stt == 0)
+  28   5                              stt_display1();
+  29   5                          else
+  30   5                              stt_display2();
+  31   5                      }
+  32   4                  }
+  33   3                  // 进入计时器界面
+  34   3                  if(P3_0 == 0)
+  35   3                  {
+  36   4                      Delay(20);
+  37   4                      if(P3_0 == 0)
+  38   4                      {
+  39   5                          while(P3_0 == 0); // 等待松手
+  40   5                          if(stt == 0) // 只有Timer界面时才进入
+  41   5                          {
+  42   6                              flag = 1;
+  43   6                              Timer_InitView(); // 进入计时器界面初始化显示
+*** WARNING C206 IN LINE 43 OF main.c: 'Timer_InitView': missing function-prototype
+  44   6                          }
+  45   5                      }
+  46   4                  }
+  47   3              }
+  48   2              else if(flag == 1) // 计时器界面
+  49   2              {
+  50   3                  Timer_view(flag); // 计时器运行与显示（你需要实现）
+*** ERROR C267 IN LINE 50 OF main.c: 'Timer_view': requires ANSI-style prototype
+  51   3      
+  52   3                  // 按P3_0返回主界面
+C51 COMPILER V9.60.7.0   MAIN                                                              10/01/2025 21:18:49 PAGE 2   
+
+  53   3                  if(P3_0 == 0)
+  54   3                  {
+  55   4                      Delay(20);
+  56   4                      if(P3_0 == 0)
+  57   4                      {
+  58   5                          while(P3_0 == 0); // 等待松手
+  59   5                          flag = 0;
+  60   5                          stt_display1(); // 返回主界面
+  61   5                      }
+  62   4                  }
+  63   3              }
+  64   2          }
+  65   1      }
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  1 ERROR(S)

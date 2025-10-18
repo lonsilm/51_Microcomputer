@@ -1,0 +1,15 @@
+".\Objects\STARTUP.obj",
+".\Objects\main.obj",
+".\Objects\function.obj",
+".\Objects\Clean.obj",
+".\Objects\Delay.obj",
+".\Objects\Key.obj",
+".\Objects\SMG.obj",
+".\Objects\Timer0.obj",
+".\Objects\MatrixLED.obj",
+".\Objects\Mixtri Keyboard.obj",
+".\Objects\LCD1602.obj",
+".\Objects\xpt2046.obj",
+".\Objects\UART.obj" 
+TO ".\Objects\project" 
+PRINT(".\Listings\project.m51") RAMSIZE(256) 

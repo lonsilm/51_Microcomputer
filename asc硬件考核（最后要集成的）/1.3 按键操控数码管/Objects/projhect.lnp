@@ -1,0 +1,10 @@
+".\Objects\STARTUP.obj",
+".\Objects\main.obj",
+".\Objects\Clean.obj",
+".\Objects\Delay.obj",
+".\Objects\Key.obj",
+".\Objects\SMG.obj",
+".\Objects\function.obj",
+".\Objects\Timer0.obj" 
+TO ".\Objects\projhect" 
+PRINT(".\Listings\projhect.m51") RAMSIZE(256) 

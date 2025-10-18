@@ -1,0 +1,59 @@
+#include <REGX52.H>
+
+/*
+* @brift: 串口初始化 4800bps@11.0592MHz
+* @param: 无
+* @return: 无
+*/
+void Uart1_Init(void)	//4800bps@11.0592MHz
+{
+	PCON |= 0x80;		//使能波特率倍速位SMOD
+	SCON = 0x50;		//8位数据,可变波特率
+	TMOD &= 0x0F;		//设置定时器模式
+	TMOD |= 0x20;		//设置定时器模式
+	TL1 = 0xF4;			//设置定时初始值
+	TH1 = 0xF4;			//设置定时重载值
+	ET1 = 0;			//禁止定时器中断
+	TR1 = 1;			//定时器1开始计时
+}
+
+
+
+/*
+* @brift: 串口发送一个字节数据
+* @param: Byte - 要发送的数据字节
+* @return: 无
+*/
+void UART_sendBYTE(unsigned char Byte)
+{
+	SBUF=Byte;
+	while(TI==0);//检测是否发送完数据，因为发送完数据之后TI=1
+	TI=0;//软件复位
+}
+
+/*
+* @brift: 串口发送一个字符串
+* @param: Str - 要发送的字符串
+* @return: 无
+*/
+void UART_sendSTRING(unsigned char *Str)
+{
+	while(*Str!='\0')//字符串结束符
+	{
+		UART_sendBYTE(*Str);//发送字符串中的每一个字符
+		Str++;//指向下一个字符
+	}
+}
+
+//串口在中断模板
+/*
+void UART_routine(void) interrupt 4
+{
+	if(RI==1)
+	{
+		//接收数据处理
+		
+		RI=0;
+	}
+}
+*/

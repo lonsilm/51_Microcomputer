@@ -1,0 +1,59 @@
+C51 COMPILER V9.60.7.0   XPT2046                                                           10/18/2025 20:53:34 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE XPT2046
+OBJECT MODULE PLACED IN .\Objects\xpt2046.obj
+COMPILER INVOKED BY: B:\keil5\C51\BIN\C51.EXE xpt2046.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\xpt
+                    -2046.lst) TABS(2) OBJECT(.\Objects\xpt2046.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          
+   3          sbit XPT2046_CS = P3^5;        // Chip Select
+   4          sbit XPT2046_CLK = P3^6;       // Clock
+   5          sbit XPT2046_DIN = P3^4;       // Data Input
+   6          sbit XPT2046_DOUT = P3^7;      // Data Output
+   7          
+   8          
+   9          
+  10          unsigned int XPT2046_ReadAD(unsigned char command)
+  11          {
+  12   1          unsigned int ADValue = 0;
+  13   1          unsigned char i;
+  14   1          XPT2046_CS=0;
+  15   1          XPT2046_CLK = 0;
+  16   1          // 发送8位命令，DIN强制为0/1
+  17   1          for(i=0;i<8;i++)
+  18   1          {
+  19   2              XPT2046_DIN = (command & (0x80>>i));
+  20   2              XPT2046_CLK = 1;
+  21   2              XPT2046_CLK = 0;
+  22   2          }
+  23   1          // 采集16位AD数据（MSB first）
+  24   1          for(i=0;i<16;i++)
+  25   1          {
+  26   2              XPT2046_CLK = 1;
+  27   2              XPT2046_CLK = 0;
+  28   2          if(XPT2046_DOUT) ADValue |= (0x8000>>i);
+  29   2          }
+  30   1          XPT2046_CS = 1;             // Disable chip
+  31   1          if(command & 0x08)
+  32   1          return ADValue>>8; // YP/XP channel is 12-bit
+  33   1          else
+  34   1          return ADValue>>4;
+  35   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    110    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,78 @@
+C51 COMPILER V9.60.7.0   FUNTION                                                           10/18/2025 10:53:29 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE FUNTION
+OBJECT MODULE PLACED IN .\Objects\funtion.obj
+COMPILER INVOKED BY: B:\keil5\C51\BIN\C51.EXE funtion.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\fun
+                    -tion.lst) TABS(2) OBJECT(.\Objects\funtion.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "Delay.h"
+   3          #include "Timer0.h"
+   4          #include "smg.h"
+   5          #include "Clean.h"
+   6          
+   7          unsigned char hh,mm,ss;
+   8          
+   9          void smg_display_time()
+  10          {
+  11   1          Timer0_Init();//初始化定时器0
+  12   1              if(ss>=60)
+  13   1              {
+  14   2                  ss=0;
+  15   2                  mm++;
+  16   2                  if(mm>=60)
+  17   2                  {
+  18   3                      mm=0;
+  19   3                      hh++;
+  20   3                      if(hh>=24)
+  21   3                      {
+  22   4                          hh=0;
+  23   4                      }
+  24   3                  }
+  25   2              }
+  26   1          SMG(1,hh/10);
+  27   1          SMG(2,hh%10);
+  28   1          SMG(4,mm/10);
+  29   1          SMG(5,mm%10);
+  30   1          SMG(7,ss/10);
+  31   1          SMG(8,ss%10);
+  32   1      }
+  33          
+  34          void Timer0_Routine() interrupt 1
+  35          {
+  36   1        static unsigned int T0Count=0;
+  37   1        
+  38   1        TL0 = 0x66;       //设置定时初始值
+  39   1        TH0 = 0xfc;       //设置定时初始值
+  40   1        //这里再赋初始值是因为如果第一次溢出之后
+  41   1        //寄存器就会从零开始+1；时间就不是1ms了
+  42   1        
+  43   1        T0Count++;
+  44   1        if(T0Count>=1000)
+  45   1        {
+  46   2          T0Count=0;
+  47   2      
+  48   2          ss++;//每隔1秒钟，秒数加1
+  49   2              
+  50   2      
+  51   2        }
+  52   1      }
+
+
+C51 COMPILER V9.60.7.0   FUNTION                                                           10/18/2025 10:53:29 PAGE 2   
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    177    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      5    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

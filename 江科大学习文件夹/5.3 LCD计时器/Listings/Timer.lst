@@ -1,0 +1,63 @@
+C51 COMPILER V9.60.7.0   TIMER                                                             10/01/2025 21:35:07 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE TIMER
+OBJECT MODULE PLACED IN .\Objects\Timer.obj
+COMPILER INVOKED BY: B:\keil5\C51\BIN\C51.EXE Timer.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\Timer
+                    -.lst) TABS(2) OBJECT(.\Objects\Timer.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "Delay.h"
+   3          #include "LCD1602.h"
+   4          
+   5          void Timer_view()
+   6          {
+   7   1          int sec = 0;
+   8   1          int min = 0;
+   9   1          int hr = 0;
+  10   1        LCD_ShowString(1, 1, "Timer:");
+  11   1        Delay(10);//延时10s
+  12   1          while(1)
+  13   1          {
+  14   2              Delay(1000); // 延时1秒
+  15   2              if(sec < 59)
+  16   2                  sec++;
+  17   2              else
+  18   2              {
+  19   3                  sec = 0;
+  20   3                  if(min < 59)
+  21   3                      min++;
+  22   3                  else
+  23   3                  {
+  24   4                      min = 0;
+  25   4                      if(hr < 23)
+  26   4                          hr++;
+  27   4                      else
+  28   4                          hr = 0;
+  29   4                  }
+  30   3              }
+  31   2              // 显示时间
+  32   2         
+  33   2          LCD_ShowNum(2, 3, hr, 2);
+  34   2          LCD_ShowString(2, 5, ":");
+  35   2          LCD_ShowNum(2, 6, min, 2);
+  36   2          LCD_ShowString(2, 8, ":");
+  37   2          LCD_ShowNum(2, 9, sec, 2);
+  38   2          }
+  39   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    195    ----
+   CONSTANT SIZE    =      9    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       6
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,3 @@
+".\Objects\main.obj" 
+TO ".\Objects\dream_stt" 
+PRINT(".\Listings\dream_stt.m51") RAMSIZE(256) 

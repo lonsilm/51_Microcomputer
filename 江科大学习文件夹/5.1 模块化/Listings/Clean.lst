@@ -1,0 +1,30 @@
+C51 COMPILER V9.60.7.0   CLEAN                                                             10/01/2025 16:33:06 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE CLEAN
+OBJECT MODULE PLACED IN .\Objects\Clean.obj
+COMPILER INVOKED BY: B:\keil5\C51\BIN\C51.EXE Clean.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\Clean
+                    -.lst) TABS(2) OBJECT(.\Objects\Clean.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          
+   3          void clean()
+   4          {
+   5   1          P0=0x00;
+   6   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =      4    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

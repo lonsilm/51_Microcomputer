@@ -1,0 +1,57 @@
+C51 COMPILER V9.60.7.0   MIXTRI_KEYBOARD                                                   10/02/2025 12:01:22 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MIXTRI_KEYBOARD
+OBJECT MODULE PLACED IN .\Objects\Mixtri Keyboard.obj
+COMPILER INVOKED BY: B:\keil5\C51\BIN\C51.EXE Mixtri Keyboard.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\List
+                    -ings\Mixtri Keyboard.lst) TABS(2) OBJECT(.\Objects\Mixtri Keyboard.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "lcd1602.h"
+   3          #include "Delay.h"
+   4          
+   5          //还是会想补一句，while，delay的用法是为了防止按键抖动
+   6          //可以理解为如果按键按下后20ms内没有松开就认为是有效按键
+   7          
+   8          char Mix_key_num()
+   9          {
+  10   1          char key_num = -1;
+  11   1      
+  12   1          P1 = 0xFF;                     // 让P1端口全部输出高电平
+  13   1          //检测第一列按键
+  14   1          P1_3 = 0;                    // 让P1.3输出低电平
+  15   1          if(P1_7 == 0){Delay(20);while(P1_7 == 0);Delay(20);key_num = 1;} // 检测P1.7按键
+  16   1          if(P1_6 == 0){Delay(20);while(P1_6 == 0);Delay(20);key_num = 4;} // 检测P1.5按键
+  17   1          if(P1_5== 0){Delay(20);while(P1_5 == 0);Delay(20);key_num = 7;} // 检测P1.9按键
+  18   1          P1 = 0xFF; 
+  19   1          //检测第二列按键
+  20   1          P1_2 = 0;                    // 让P1.2输出低电平
+  21   1          if(P1_7 == 0){Delay(20);while(P1_7 == 0);Delay(20);key_num = 2;} // 检测P1.7按键
+  22   1          if(P1_6 == 0){Delay(20);while(P1_6 == 0);Delay(20);key_num = 5;} // 检测P1.6按键
+  23   1          if(P1_5 == 0){Delay(20);while(P1_5 == 0);Delay(20);key_num = 8;} // 检测P1.5按键
+  24   1          if(P1_4 == 0){Delay(20);while(P1_4 == 0);Delay(20);key_num = 0;} // 检测P1.4按键
+  25   1          P1 = 0xFF; 
+  26   1          //检测第三列按键
+  27   1          P1_1 = 0;                    // 让P1.1输出低电平
+  28   1          if(P1_7 == 0){Delay(20);while(P1_7 == 0);Delay(20);key_num = 3;} // 检测P1.7按键
+  29   1          if(P1_6 == 0){Delay(20);while(P1_6 == 0);Delay(20);key_num = 6;} // 检测P1.6按键
+  30   1          if(P1_5 == 0){Delay(20);while(P1_5 == 0);Delay(20);key_num = 9;} // 检测P1.5按键
+  31   1      
+  32   1          return key_num;
+  33   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    251    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

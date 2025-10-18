@@ -1,0 +1,69 @@
+C51 COMPILER V9.60.7.0   MIXTRI_KEYBOARD                                                   10/18/2025 20:33:34 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MIXTRI_KEYBOARD
+OBJECT MODULE PLACED IN .\Objects\Mixtri Keyboard.obj
+COMPILER INVOKED BY: B:\keil5\C51\BIN\C51.EXE Mixtri Keyboard.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\List
+                    -ings\Mixtri Keyboard.lst) TABS(2) OBJECT(.\Objects\Mixtri Keyboard.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "Delay.h"
+   3          
+   4          //还是会想补一句，while，delay的用法是为了防止按键抖动
+   5          //可以理解为如果按键按下后20ms内没有松开就认为是有效按键
+   6          /*
+   7          *@brief 混合键盘按键扫描函数
+   8          *@return 返回按键值，未按下返回-1
+   9          */
+  10          
+  11          char Mix_key_num()
+  12          {
+  13   1          char key_num = -1;
+  14   1      
+  15   1          P1 = 0xFF;                     // 让P1端口全部输出高电平
+  16   1          //检测第一列按键
+  17   1          P1_3 = 0;                    // 让P1.3输出低电平
+  18   1          if(P1_7 == 0){Delayms(20);while(P1_7 == 0);Delayms(20);key_num = 1;} // 检测P1.7按键
+  19   1          if(P1_6 == 0){Delayms(20);while(P1_6 == 0);Delayms(20);key_num = 4;} // 检测P1.5按键
+  20   1          if(P1_5== 0){Delayms(20);while(P1_5 == 0);Delayms(20);key_num = 7;} // 检测P1.9按键
+  21   1          P1 = 0xFF; 
+  22   1          //检测第二列按键
+  23   1          P1_2 = 0;                    // 让P1.2输出低电平
+  24   1          if(P1_7 == 0){Delayms(20);while(P1_7 == 0);Delayms(20);key_num = 2;} // 检测P1.7按键
+  25   1          if(P1_6 == 0){Delayms(20);while(P1_6 == 0);Delayms(20);key_num = 5;} // 检测P1.6按键
+  26   1          if(P1_5 == 0){Delayms(20);while(P1_5 == 0);Delayms(20);key_num = 8;} // 检测P1.5按键
+  27   1          if(P1_4 == 0){Delayms(20);while(P1_4 == 0);Delayms(20);key_num = 0;} // 检测P1.4按键
+  28   1          P1 = 0xFF; 
+  29   1          //检测第三列按键
+  30   1          P1_1 = 0;                    // 让P1.1输出低电平
+  31   1          if(P1_7 == 0){Delayms(20);while(P1_7 == 0);Delayms(20);key_num = 3;} // 检测P1.7按键
+  32   1          if(P1_6 == 0){Delayms(20);while(P1_6 == 0);Delayms(20);key_num = 6;} // 检测P1.6按键
+  33   1          if(P1_5 == 0){Delayms(20);while(P1_5 == 0);Delayms(20);key_num = 9;} // 检测P1.5按键
+  34   1          P1 = 0xFF;
+  35   1          //检测第四列按键
+  36   1          P1_0 = 0;                    // 让P1.0输出低电平
+  37   1          if(P1_7 == 0){Delayms(20);while(P1_7 == 0);Delayms(20);key_num = 11;} // 检测P1.7按键
+  38   1          if(P1_6 == 0){Delayms(20);while(P1_6 == 0);Delayms(20);key_num = 12;} // 检测P1.6按键
+  39   1          if(P1_5 == 0){Delayms(20);while(P1_5 == 0);Delayms(20);key_num = 13;} // 检测P1.5按键
+  40   1          P1 = 0xFF;
+  41   1      
+  42   1          return key_num;
+  43   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    328    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+C51 COMPILER V9.60.7.0   MIXTRI_KEYBOARD                                                   10/18/2025 20:33:34 PAGE 2   
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,98 @@
+C51 COMPILER V9.60.7.0   TIMER0                                                            10/11/2025 23:47:14 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE TIMER0
+OBJECT MODULE PLACED IN .\Objects\Timer0.obj
+COMPILER INVOKED BY: B:\keil5\C51\BIN\C51.EXE Timer0.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\Time
+                    -r0.lst) TABS(2) OBJECT(.\Objects\Timer0.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          
+   3          
+   4          void Timer0_Init1ms(void)   //1毫秒@12.000MHz
+   5          {
+   6   1        TMOD &= 0xF0;     //设置定时器模式
+   7   1        TMOD |= 0x01;     //设置定时器模式
+   8   1        TL0 = 0x18;       //设置定时初始值
+   9   1        TH0 = 0xfc;       //设置定时初始值
+  10   1        TF0 = 0;        //清除TF0标志
+  11   1        TR0 = 1;
+  12   1        ET0 = 1;
+  13   1        EA = 1;
+  14   1        PT0 = 0;        //定时器0开始计时
+  15   1      }
+  16          
+  17          void Timer0_Init100us(void)   //100微秒@11.0592MHz
+  18          {
+  19   1        TMOD &= 0xF0;     //设置定时器模式
+  20   1        TL0 = 0xAE;       //设置定时初始值
+  21   1        TH0 = 0xFB;       //设置定时初始值
+  22   1        TF0 = 0;        //清除TF0标志
+  23   1        TR0 = 1;        //定时器0开始计时
+  24   1        ET0 = 1;
+  25   1        EA = 1;
+  26   1        PT0 = 0;        //定时器0开始计时
+  27   1      }
+  28          
+  29          
+  30          
+  31          
+  32          //中断执行函数的模板
+  33          //每隔1s
+  34          
+  35          /*
+  36          void Timer0_Routine() interrupt 1
+  37          {
+  38            static unsigned int T0Count=0;
+  39            
+  40            TL0 = 0x18;       //设置定时初始值
+  41            TH0 = 0xDfc;        //设置定时初始值
+  42            //这里再赋初始值是因为如果第一次溢出之后
+  43            //寄存器就会从零开始+1；时间就不是1ms了
+  44            
+  45            T0Count++;
+  46            if(T0Count>=1000)
+  47            {
+  48              T0Count=0;
+  49          
+  50              这里写你需要执行的程序
+  51          
+  52            }
+  53          }
+  54          */
+C51 COMPILER V9.60.7.0   TIMER0                                                            10/11/2025 23:47:14 PAGE 2   
+
+  55          
+  56          //中断执行函数的模板
+  57          //每隔100us
+  58          
+  59          /*
+  60          void Timer0_Routine() interrupt 1
+  61          {
+  62            static unsigned int T0Count=0;
+  63            
+  64            TL0 = 0xAE;       //设置定时初始值
+  65            TH0 = 0xFB;       //设置定时初始值
+  66            //这里再赋初始值是因为如果第一次溢出之后
+  67            //寄存器就会从零开始+1；时间就不是1ms了
+  68            
+  69            //这里写你需要执行的程序
+  70          
+  71          }
+  72          */
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     43    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

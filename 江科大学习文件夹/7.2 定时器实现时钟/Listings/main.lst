@@ -1,0 +1,82 @@
+C51 COMPILER V9.60.7.0   MAIN                                                              10/03/2025 17:55:08 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: B:\keil5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main.l
+                    -st) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "key.h"
+   3          #include "lcd1602.h"
+   4          #include "Timer0.h"
+   5          #include "delay.h"
+   6          
+   7          unsigned char sec,min,hour;
+   8          
+   9          void main()
+  10          {
+  11   1          LCD_Init();
+  12   1          Timer0_Init();
+  13   1          LCD_ShowString(1,1,"COLCK:");
+  14   1          LCD_ShowString(2,1,"  :  :  ");
+  15   1          while(1)
+  16   1          {
+  17   2          LCD_ShowNum(2,1,hour,2);
+  18   2      
+  19   2              LCD_ShowNum(2,4,min,2);
+  20   2      
+  21   2              LCD_ShowNum(2,7,sec,2);
+  22   2          }
+  23   1      }
+  24          
+  25          void Timer0_Routine() interrupt 1
+  26          {
+  27   1        static unsigned int T0Count=0;
+  28   1        
+  29   1        TL0 = 0x18;       //设置定时初始值
+  30   1        TH0 = 0xDfc;        //设置定时初始值
+  31   1        //这里再赋初始值是因为如果第一次溢出之后
+  32   1        //寄存器就会从零开始+1；时间就不是1ms了
+  33   1        
+  34   1        T0Count++;
+  35   1        if(T0Count>=1000)
+  36   1        {
+  37   2          T0Count=0;
+  38   2      
+  39   2          sec++;
+  40   2          if(sec>=60)
+  41   2              {
+  42   3                  sec=0;
+  43   3                  min++;
+  44   3                  if(min>=60)
+  45   3                  {
+  46   4                      min=0;
+  47   4                      hour++;
+  48   4                      if(hour>=24)
+  49   4                      {
+  50   5                          hour=0;
+  51   5                      }
+  52   4                  }
+  53   3              }
+  54   2      
+C51 COMPILER V9.60.7.0   MAIN                                                              10/03/2025 17:55:08 PAGE 2   
+
+  55   2        }
+  56   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    150    ----
+   CONSTANT SIZE    =     16    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      5    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
