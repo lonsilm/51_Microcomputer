@@ -233,7 +233,7 @@
               <RCB>
                 <Type>0</Type>
                 <StartAddress>0x0</StartAddress>
-                <Size>0xffff</Size>
+                <Size>0x10000</Size>
               </RCB>
               <RXB>
                 <Type>0</Type>
@@ -385,6 +385,36 @@
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\main.c</FilePath>
+            </File>
+            <File>
+              <FileName>function.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\function.c</FilePath>
+            </File>
+            <File>
+              <FileName>function.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\function.h</FilePath>
+            </File>
+            <File>
+              <FileName>Delay.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Delay.c</FilePath>
+            </File>
+            <File>
+              <FileName>Delay.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Delay.h</FilePath>
+            </File>
+            <File>
+              <FileName>MatrixLED.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\MatrixLED.c</FilePath>
+            </File>
+            <File>
+              <FileName>MatrixLED.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\MatrixLED.h</FilePath>
             </File>
           </Files>
         </Group>

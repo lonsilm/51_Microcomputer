@@ -13,6 +13,18 @@
 
 unsigned char stream_i=0;
 
+unsigned char code i_love_asc[] =//I SUPER LOVE ASC
+{
+0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, 
+0x81,0xFF,0x81,0x00,0x00,0x32,0x49,0x26,
+0x00,0x3C,0x02,0x02,0x3C,0x00,0x7F,0x48,
+0x30,0x00,0x1C,0x2A,0x2A,0x18,0x00,0x3E,
+0x10,0x20,0x10,0x00,0x00,0x38,0x44,0x42,
+0x21,0x42,0x44,0x38,0x00,0x00,0x01,0x04,
+0x18,0x48,0xFF,0x00,0x72,0x89,0x89,0x66,
+0x00,0x7E,0x81,0x81,0x66,0x00,0x00,0x00,
+0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, 
+};
 
 /*
 *@brief  非阻塞流水灯函数
@@ -63,12 +75,12 @@ void control_smg()
 {
     unsigned char key;
     static unsigned char num=0;
-    key=Key();
-    if(key==3)
+    key=Mix_key_num();
+    if(key==1)
     {
         num++;
     }
-    if(key==4)
+    if(key==2)
     {
         num--;
     }
@@ -100,32 +112,82 @@ unsigned char code C_zimo[8] = {0x00,0x7E,0x81,0x81,0x81,0x81,0x66,0x00};
 
 void control_matrix_led()
 {
-    unsigned char mixkey_num, i;
+    unsigned char mixkey_num, i,j;
     mixkey_num = Mix_key_num();
 
     // 如果是数字 0..9，直接从 digits 表中取图案
-    if(mixkey_num <= 9)
+    // if(mixkey_num <= 9)
+    // {
+    //         for(i = 0; i < 8; i++)
+    //         {
+    //             MatrixLED_ShowColumn(i, digits[mixkey_num][i]);
+    //             Delayms(2);
+    //         }   
+    // }
+    switch (mixkey_num)
     {
-        
-        for(i = 0; i < 8; i++)
-        {
-            MatrixLED_ShowColumn(i, digits[mixkey_num][i]);
-            Delayms(2);
-        }
-        
+        case 1:
+        for(j=0;j<20;j++)
+            {for(i = 0; i < 8; i++) { MatrixLED_ShowColumn(i, digits[mixkey_num][i]); Delayms(2); }}
+            break;
+
+        case 2:
+        for(j=0;j<20;j++)
+            {for(i = 0; i < 8; i++) { MatrixLED_ShowColumn(i, digits[mixkey_num][i]); Delayms(2); }}
+            break;
+
+        case 3:
+        for(j=0;j<20;j++)
+            {for(i = 0; i < 8; i++) { MatrixLED_ShowColumn(i, digits[mixkey_num][i]); Delayms(2); }}
+            break;
+
+        case 4:
+        for(j=0;j<20;j++)
+            {for(i = 0; i < 8; i++) { MatrixLED_ShowColumn(i, digits[mixkey_num][i]); Delayms(2); }}
+            break;
+
+        case 5:
+        for(j=0;j<20;j++)
+            {for(i = 0; i < 8; i++) { MatrixLED_ShowColumn(i, digits[mixkey_num][i]); Delayms(2); }}
+            break;
+        case 6:
+        for(j=0;j<20;j++)
+            {for(i = 0; i < 8; i++) { MatrixLED_ShowColumn(i, digits[mixkey_num][i]); Delayms(2); }}
+            break;
+        case 7:
+        for(j=0;j<20;j++)
+            {for(i = 0; i < 8; i++) { MatrixLED_ShowColumn(i, digits[mixkey_num][i]); Delayms(2); }}
+            break;
+        case 8:
+        for(j=0;j<20;j++)
+            {for(i = 0; i < 8; i++) { MatrixLED_ShowColumn(i, digits[mixkey_num][i]); Delayms(2); }}
+            break;
+        case 9:
+        for(j=0;j<20;j++)
+            {for(i = 0; i < 8; i++) { MatrixLED_ShowColumn(i, digits[mixkey_num][i]); Delayms(2); }}
+            break;
+        case 0:
+        for(j=0;j<20;j++)
+            {for(i = 0; i < 8; i++) { MatrixLED_ShowColumn(i, digits[mixkey_num][i]); Delayms(2); }}
+            break;
+        default:
+            break;
     }
 
     // 处理字母或特殊键
     switch(mixkey_num)
     {
         case 11:
-            for(i = 0; i < 8; i++) { MatrixLED_ShowColumn(i, A_zimo[i]); Delayms(2); }
+        for(j=0;j<20;j++)
+            {for(i = 0; i < 8; i++) { MatrixLED_ShowColumn(i, A_zimo[i]); Delayms(2); }}
             break;
         case 12:
-            for(i = 0; i < 8; i++) { MatrixLED_ShowColumn(i, S_zimo[i]); Delayms(2); }
+        for(j=0;j<20;j++)
+            {for(i = 0; i < 8; i++) { MatrixLED_ShowColumn(i, S_zimo[i]); Delayms(2); }}
             break;
         case 13:
-            for(i = 0; i < 8; i++) { MatrixLED_ShowColumn(i, C_zimo[i]); Delayms(2); }
+        for(j=0;j<20;j++)
+            {for(i = 0; i < 8; i++) { MatrixLED_ShowColumn(i, C_zimo[i]); Delayms(2); }}
             break;
         default:
             // 未定义或无按键时，可选择清空或保持当前显示，此处不改变显示
@@ -168,6 +230,27 @@ void uartuser()
     {
         UART_sendSTRING("adventure success cooperation\r\n");
     }
+}
+
+void show_i_love_asc()
+{
+    unsigned char i=0;
+    static unsigned char setoff=0,cnt=0;
+    for(i=0;i<8;i++)
+        {
+            MatrixLED_ShowColumn(i,i_love_asc[i+setoff]);
+        }
+        cnt++;
+        if(cnt==10)
+        {
+            cnt=0;
+            setoff++;
+        }
+
+        if(setoff==72-8)
+        {
+            setoff=0;
+        }
 }
 
 void Timer0_Routine() interrupt 1

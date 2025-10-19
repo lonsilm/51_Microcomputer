@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.7.0   FUNCTION                                                          10/18/2025 21:02:34 PAGE 1   
+C51 COMPILER V9.60.7.0   FUNCTION                                                          10/19/2025 11:58:29 PAGE 1   
 
 
 C51 COMPILER V9.60.7.0, COMPILATION OF MODULE FUNCTION
@@ -23,195 +23,280 @@ line level    source
   13          
   14          unsigned char stream_i=0;
   15          
-  16          
-  17          /*
-  18          *@brief  非阻塞流水灯函数
-  19          */
-  20          void led_stream()
-  21          {
-  22   1          if(stream_i>=8)
-  23   1          {
-  24   2              stream_i=0;
-  25   2          }
-  26   1          P2=~(0x01<<stream_i);
-  27   1          
-  28   1      }
-  29          
-  30          /*
-  31          * @brief  数码管显示时间函数
-  32          */
-  33          unsigned char hh,mm,ss;
-  34          
-  35          void smg_display_time()
-  36          {
-  37   1          Timer0_Init();//初始化定时器0
-  38   1              if(ss>=60)
-  39   1              {
-  40   2                  ss=0;
-  41   2                  mm++;
-  42   2                  if(mm>=60)
-  43   2                  {
-  44   3                      mm=0;
-  45   3                      hh++;
-  46   3                      if(hh>=24)
-  47   3                      {
-  48   4                          hh=0;
-  49   4                      }
-  50   3                  }
-  51   2              }
-  52   1          SMG(1,hh/10);
-  53   1          SMG(2,hh%10);
-  54   1          SMG(4,mm/10);
-C51 COMPILER V9.60.7.0   FUNCTION                                                          10/18/2025 21:02:34 PAGE 2   
+  16          unsigned char code i_love_asc[] =//I SUPER LOVE ASC
+  17          {
+  18          0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, 
+  19          0x81,0xFF,0x81,0x00,0x00,0x32,0x49,0x26,
+  20          0x00,0x3C,0x02,0x02,0x3C,0x00,0x7F,0x48,
+  21          0x30,0x00,0x1C,0x2A,0x2A,0x18,0x00,0x3E,
+  22          0x10,0x20,0x10,0x00,0x00,0x38,0x44,0x42,
+  23          0x21,0x42,0x44,0x38,0x00,0x00,0x01,0x04,
+  24          0x18,0x48,0xFF,0x00,0x72,0x89,0x89,0x66,
+  25          0x00,0x7E,0x81,0x81,0x66,0x00,0x00,0x00,
+  26          0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, 
+  27          };
+  28          
+  29          /*
+  30          *@brief  非阻塞流水灯函数
+  31          */
+  32          void led_stream()
+  33          {
+  34   1          if(stream_i>=8)
+  35   1          {
+  36   2              stream_i=0;
+  37   2          }
+  38   1          P2=~(0x01<<stream_i);
+  39   1          
+  40   1      }
+  41          
+  42          /*
+  43          * @brief  数码管显示时间函数
+  44          */
+  45          unsigned char hh,mm,ss;
+  46          
+  47          void smg_display_time()
+  48          {
+  49   1          Timer0_Init();//初始化定时器0
+  50   1              if(ss>=60)
+  51   1              {
+  52   2                  ss=0;
+  53   2                  mm++;
+  54   2                  if(mm>=60)
+C51 COMPILER V9.60.7.0   FUNCTION                                                          10/19/2025 11:58:29 PAGE 2   
 
-  55   1          SMG(5,mm%10);
-  56   1          SMG(7,ss/10);
-  57   1          SMG(8,ss%10);
-  58   1      }
-  59          
-  60          /**@brief  按键操控数码管显示函数
-  61          */
-  62          void control_smg()
-  63          {
-  64   1          unsigned char key;
-  65   1          static unsigned char num=0;
-  66   1          key=Key();
-  67   1          if(key==3)
-  68   1          {
-  69   2              num++;
-  70   2          }
-  71   1          if(key==4)
-  72   1          {
-  73   2              num--;
-  74   2          }
-  75   1          SMG(7,num/10);
-  76   1          SMG(8,num%10);
-  77   1      }
-  78          
-  79          
-  80          /*
-  81          *@brief  控制点阵显示函数
-  82          */
-  83          // 合并数字图案为二维数组，便于索引和维护
-  84          unsigned char code digits[10][8] = {
-  85              {0x00,0x00,0x7E,0x81,0x81,0x7E,0x00,0x00}, // 0
-  86              {0x00,0x00,0x41,0xFF,0xFF,0x01,0x00,0x00}, // 1
-  87              {0x00,0x41,0x83,0x85,0x89,0x71,0x00,0x00}, // 2
-  88              {0x00,0x42,0x81,0x89,0x89,0x76,0x00,0x00}, // 3
-  89              {0x00,0x18,0x78,0x08,0xFF,0x08,0x08,0x00}, // 4
-  90              {0x00,0x08,0xF1,0x51,0x51,0x0E,0x00,0x00}, // 5
-  91              {0x00,0x7E,0x91,0x91,0x91,0x4E,0x00,0x00}, // 6
-  92              {0x00,0x80,0x80,0x81,0x8C,0xE0,0x00,0x00}, // 7
-  93              {0x00,0x6E,0x91,0x91,0x91,0x6E,0x00,0x00}, // 8
-  94              {0x00,0x72,0x89,0x89,0x89,0x7E,0x00,0x00}  // 9
-  95          };
-  96          
-  97          unsigned char code A_zimo[8] = {0x00,0x01,0x04,0x18,0x48,0xFF,0x00,0x00};
-  98          unsigned char code S_zimo[8] = {0x00,0x66,0x91,0x89,0x89,0x66,0x00,0x00};
-  99          unsigned char code C_zimo[8] = {0x00,0x7E,0x81,0x81,0x81,0x81,0x66,0x00};
- 100          
- 101          void control_matrix_led()
- 102          {
- 103   1          unsigned char mixkey_num, i;
- 104   1          mixkey_num = Mix_key_num();
- 105   1      
- 106   1          // 如果是数字 0..9，直接从 digits 表中取图案
- 107   1          if(mixkey_num <= 9)
- 108   1          {
- 109   2              
- 110   2              for(i = 0; i < 8; i++)
- 111   2              {
- 112   3                  MatrixLED_ShowColumn(i, digits[mixkey_num][i]);
- 113   3                  Delayms(2);
- 114   3              }
- 115   2              
- 116   2          }
-C51 COMPILER V9.60.7.0   FUNCTION                                                          10/18/2025 21:02:34 PAGE 3   
+  55   2                  {
+  56   3                      mm=0;
+  57   3                      hh++;
+  58   3                      if(hh>=24)
+  59   3                      {
+  60   4                          hh=0;
+  61   4                      }
+  62   3                  }
+  63   2              }
+  64   1          SMG(1,hh/10);
+  65   1          SMG(2,hh%10);
+  66   1          SMG(4,mm/10);
+  67   1          SMG(5,mm%10);
+  68   1          SMG(7,ss/10);
+  69   1          SMG(8,ss%10);
+  70   1      }
+  71          
+  72          /**@brief  按键操控数码管显示函数
+  73          */
+  74          void control_smg()
+  75          {
+  76   1          unsigned char key;
+  77   1          static unsigned char num=0;
+  78   1          key=Mix_key_num();
+  79   1          if(key==1)
+  80   1          {
+  81   2              num++;
+  82   2          }
+  83   1          if(key==2)
+  84   1          {
+  85   2              num--;
+  86   2          }
+  87   1          SMG(7,num/10);
+  88   1          SMG(8,num%10);
+  89   1      }
+  90          
+  91          
+  92          /*
+  93          *@brief  控制点阵显示函数
+  94          */
+  95          // 合并数字图案为二维数组，便于索引和维护
+  96          unsigned char code digits[10][8] = {
+  97              {0x00,0x00,0x7E,0x81,0x81,0x7E,0x00,0x00}, // 0
+  98              {0x00,0x00,0x41,0xFF,0xFF,0x01,0x00,0x00}, // 1
+  99              {0x00,0x41,0x83,0x85,0x89,0x71,0x00,0x00}, // 2
+ 100              {0x00,0x42,0x81,0x89,0x89,0x76,0x00,0x00}, // 3
+ 101              {0x00,0x18,0x78,0x08,0xFF,0x08,0x08,0x00}, // 4
+ 102              {0x00,0x08,0xF1,0x51,0x51,0x0E,0x00,0x00}, // 5
+ 103              {0x00,0x7E,0x91,0x91,0x91,0x4E,0x00,0x00}, // 6
+ 104              {0x00,0x80,0x80,0x81,0x8C,0xE0,0x00,0x00}, // 7
+ 105              {0x00,0x6E,0x91,0x91,0x91,0x6E,0x00,0x00}, // 8
+ 106              {0x00,0x72,0x89,0x89,0x89,0x7E,0x00,0x00}  // 9
+ 107          };
+ 108          
+ 109          unsigned char code A_zimo[8] = {0x00,0x01,0x04,0x18,0x48,0xFF,0x00,0x00};
+ 110          unsigned char code S_zimo[8] = {0x00,0x66,0x91,0x89,0x89,0x66,0x00,0x00};
+ 111          unsigned char code C_zimo[8] = {0x00,0x7E,0x81,0x81,0x81,0x81,0x66,0x00};
+ 112          
+ 113          void control_matrix_led()
+ 114          {
+ 115   1          unsigned char mixkey_num, i,j;
+ 116   1          mixkey_num = Mix_key_num();
+C51 COMPILER V9.60.7.0   FUNCTION                                                          10/19/2025 11:58:29 PAGE 3   
 
  117   1      
- 118   1          // 处理字母或特殊键
- 119   1          switch(mixkey_num)
- 120   1          {
- 121   2              case 11:
- 122   2                  for(i = 0; i < 8; i++) { MatrixLED_ShowColumn(i, A_zimo[i]); Delayms(2); }
- 123   2                  break;
- 124   2              case 12:
- 125   2                  for(i = 0; i < 8; i++) { MatrixLED_ShowColumn(i, S_zimo[i]); Delayms(2); }
- 126   2                  break;
- 127   2              case 13:
- 128   2                  for(i = 0; i < 8; i++) { MatrixLED_ShowColumn(i, C_zimo[i]); Delayms(2); }
- 129   2                  break;
- 130   2              default:
- 131   2                  // 未定义或无按键时，可选择清空或保持当前显示，此处不改变显示
+ 118   1          // 如果是数字 0..9，直接从 digits 表中取图案
+ 119   1          // if(mixkey_num <= 9)
+ 120   1          // {
+ 121   1          //         for(i = 0; i < 8; i++)
+ 122   1          //         {
+ 123   1          //             MatrixLED_ShowColumn(i, digits[mixkey_num][i]);
+ 124   1          //             Delayms(2);
+ 125   1          //         }   
+ 126   1          // }
+ 127   1          switch (mixkey_num)
+ 128   1          {
+ 129   2              case 1:
+ 130   2              for(j=0;j<20;j++)
+ 131   2                  {for(i = 0; i < 8; i++) { MatrixLED_ShowColumn(i, digits[mixkey_num][i]); Delayms(2); }}
  132   2                  break;
- 133   2          }
- 134   1      }
- 135          
- 136          /*
- 137          *@brief  LCD显示函数
- 138          */
- 139          void lcd_display()
- 140          {
- 141   1              LCD_ShowString(1, 1, "Hello, World!");
- 142   1              LCD_ShowString(2, 1, "I LOVE ASC!!");
- 143   1      }
- 144          
- 145          /*
- 146          *@brief  AD读取函数
- 147          */
- 148          void  ad_read_function()
- 149          {
- 150   1          unsigned int ADValue1;
- 151   1          LCD_ShowString(1,1,"GR");
- 152   1          ADValue1 = XPT2046_ReadAD(XPT2046_VBAT12);
- 153   1          LCD_ShowNum(2,1,ADValue1,4);
- 154   1          Delayms(100);
- 155   1      }
- 156          
- 157          void uartuser()
- 158          {
- 159   1          unsigned char keynum = 0;
- 160   1          Uart1_Init();
- 161   1          
- 162   1          keynum = Key();
- 163   1          if(keynum == 3)
- 164   1          {
- 165   2              UART_sendSTRING("Passionate about technology willing to contribute\r\n");
- 166   2          }
- 167   1          else if(keynum == 4)
- 168   1          {
- 169   2              UART_sendSTRING("adventure success cooperation\r\n");
- 170   2          }
- 171   1      }
- 172          
- 173          void Timer0_Routine() interrupt 1
- 174          {
- 175   1        static unsigned int T0Count=0;
- 176   1        
- 177   1        TL0 = 0x66;       //设置定时初始值
- 178   1        TH0 = 0xfc;       //设置定时初始值
-C51 COMPILER V9.60.7.0   FUNCTION                                                          10/18/2025 21:02:34 PAGE 4   
+ 133   2      
+ 134   2              case 2:
+ 135   2              for(j=0;j<20;j++)
+ 136   2                  {for(i = 0; i < 8; i++) { MatrixLED_ShowColumn(i, digits[mixkey_num][i]); Delayms(2); }}
+ 137   2                  break;
+ 138   2      
+ 139   2              case 3:
+ 140   2              for(j=0;j<20;j++)
+ 141   2                  {for(i = 0; i < 8; i++) { MatrixLED_ShowColumn(i, digits[mixkey_num][i]); Delayms(2); }}
+ 142   2                  break;
+ 143   2      
+ 144   2              case 4:
+ 145   2              for(j=0;j<20;j++)
+ 146   2                  {for(i = 0; i < 8; i++) { MatrixLED_ShowColumn(i, digits[mixkey_num][i]); Delayms(2); }}
+ 147   2                  break;
+ 148   2      
+ 149   2              case 5:
+ 150   2              for(j=0;j<20;j++)
+ 151   2                  {for(i = 0; i < 8; i++) { MatrixLED_ShowColumn(i, digits[mixkey_num][i]); Delayms(2); }}
+ 152   2                  break;
+ 153   2              case 6:
+ 154   2              for(j=0;j<20;j++)
+ 155   2                  {for(i = 0; i < 8; i++) { MatrixLED_ShowColumn(i, digits[mixkey_num][i]); Delayms(2); }}
+ 156   2                  break;
+ 157   2              case 7:
+ 158   2              for(j=0;j<20;j++)
+ 159   2                  {for(i = 0; i < 8; i++) { MatrixLED_ShowColumn(i, digits[mixkey_num][i]); Delayms(2); }}
+ 160   2                  break;
+ 161   2              case 8:
+ 162   2              for(j=0;j<20;j++)
+ 163   2                  {for(i = 0; i < 8; i++) { MatrixLED_ShowColumn(i, digits[mixkey_num][i]); Delayms(2); }}
+ 164   2                  break;
+ 165   2              case 9:
+ 166   2              for(j=0;j<20;j++)
+ 167   2                  {for(i = 0; i < 8; i++) { MatrixLED_ShowColumn(i, digits[mixkey_num][i]); Delayms(2); }}
+ 168   2                  break;
+ 169   2              case 0:
+ 170   2              for(j=0;j<20;j++)
+ 171   2                  {for(i = 0; i < 8; i++) { MatrixLED_ShowColumn(i, digits[mixkey_num][i]); Delayms(2); }}
+ 172   2                  break;
+ 173   2              default:
+ 174   2                  break;
+ 175   2          }
+ 176   1      
+ 177   1          // 处理字母或特殊键
+ 178   1          switch(mixkey_num)
+C51 COMPILER V9.60.7.0   FUNCTION                                                          10/19/2025 11:58:29 PAGE 4   
 
- 179   1        //这里再赋初始值是因为如果第一次溢出之后
- 180   1        //寄存器就会从零开始+1；时间就不是1ms了
- 181   1        
- 182   1        T0Count++;
- 183   1        if(T0Count>=1000)
- 184   1        {
- 185   2          T0Count=0;
- 186   2      
- 187   2          stream_i++;//每隔1秒流水灯移动一次
- 188   2              ss++;//每隔1秒秒数加1
- 189   2        }
- 190   1      }
+ 179   1          {
+ 180   2              case 11:
+ 181   2              for(j=0;j<20;j++)
+ 182   2                  {for(i = 0; i < 8; i++) { MatrixLED_ShowColumn(i, A_zimo[i]); Delayms(2); }}
+ 183   2                  break;
+ 184   2              case 12:
+ 185   2              for(j=0;j<20;j++)
+ 186   2                  {for(i = 0; i < 8; i++) { MatrixLED_ShowColumn(i, S_zimo[i]); Delayms(2); }}
+ 187   2                  break;
+ 188   2              case 13:
+ 189   2              for(j=0;j<20;j++)
+ 190   2                  {for(i = 0; i < 8; i++) { MatrixLED_ShowColumn(i, C_zimo[i]); Delayms(2); }}
+ 191   2                  break;
+ 192   2              default:
+ 193   2                  // 未定义或无按键时，可选择清空或保持当前显示，此处不改变显示
+ 194   2                  break;
+ 195   2          }
+ 196   1      }
+ 197          
+ 198          /*
+ 199          *@brief  LCD显示函数
+ 200          */
+ 201          void lcd_display()
+ 202          {
+ 203   1              LCD_ShowString(1, 1, "Hello, World!");
+ 204   1              LCD_ShowString(2, 1, "I LOVE ASC!!");
+ 205   1      }
+ 206          
+ 207          /*
+ 208          *@brief  AD读取函数
+ 209          */
+ 210          void  ad_read_function()
+ 211          {
+ 212   1          unsigned int ADValue1;
+ 213   1          LCD_ShowString(1,1,"GR");
+ 214   1          ADValue1 = XPT2046_ReadAD(XPT2046_VBAT12);
+ 215   1          LCD_ShowNum(2,1,ADValue1,4);
+ 216   1          Delayms(100);
+ 217   1      }
+ 218          
+ 219          void uartuser()
+ 220          {
+ 221   1          unsigned char keynum = 0;
+ 222   1          Uart1_Init();
+ 223   1          
+ 224   1          keynum = Key();
+ 225   1          if(keynum == 3)
+ 226   1          {
+ 227   2              UART_sendSTRING("Passionate about technology willing to contribute\r\n");
+ 228   2          }
+ 229   1          else if(keynum == 4)
+ 230   1          {
+ 231   2              UART_sendSTRING("adventure success cooperation\r\n");
+ 232   2          }
+ 233   1      }
+ 234          
+ 235          void show_i_love_asc()
+ 236          {
+ 237   1          unsigned char i=0;
+ 238   1          static unsigned char setoff=0,cnt=0;
+ 239   1          for(i=0;i<8;i++)
+ 240   1              {
+C51 COMPILER V9.60.7.0   FUNCTION                                                          10/19/2025 11:58:29 PAGE 5   
+
+ 241   2                  MatrixLED_ShowColumn(i,i_love_asc[i+setoff]);
+ 242   2              }
+ 243   1              cnt++;
+ 244   1              if(cnt==10)
+ 245   1              {
+ 246   2                  cnt=0;
+ 247   2                  setoff++;
+ 248   2              }
+ 249   1      
+ 250   1              if(setoff==72-8)
+ 251   1              {
+ 252   2                  setoff=0;
+ 253   2              }
+ 254   1      }
+ 255          
+ 256          void Timer0_Routine() interrupt 1
+ 257          {
+ 258   1        static unsigned int T0Count=0;
+ 259   1        
+ 260   1        TL0 = 0x66;       //设置定时初始值
+ 261   1        TH0 = 0xfc;       //设置定时初始值
+ 262   1        //这里再赋初始值是因为如果第一次溢出之后
+ 263   1        //寄存器就会从零开始+1；时间就不是1ms了
+ 264   1        
+ 265   1        T0Count++;
+ 266   1        if(T0Count>=1000)
+ 267   1        {
+ 268   2          T0Count=0;
+ 269   2      
+ 270   2          stream_i++;//每隔1秒流水灯移动一次
+ 271   2              ss++;//每隔1秒秒数加1
+ 272   2        }
+ 273   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    531    ----
-   CONSTANT SIZE    =    218    ----
+   CODE SIZE        =   1282    ----
+   CONSTANT SIZE    =    290    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =      7       3
+   DATA SIZE        =      9       5
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.

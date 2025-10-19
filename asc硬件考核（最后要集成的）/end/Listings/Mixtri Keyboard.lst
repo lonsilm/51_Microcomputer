@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.7.0   MIXTRI_KEYBOARD                                                   10/18/2025 20:33:34 PAGE 1   
+C51 COMPILER V9.60.7.0   MIXTRI_KEYBOARD                                                   10/19/2025 00:42:38 PAGE 1   
 
 
 C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MIXTRI_KEYBOARD
@@ -11,59 +11,141 @@ line level    source
    1          #include <REGX52.H>
    2          #include "Delay.h"
    3          
-   4          //还是会想补一句，while，delay的用法是为了防止按键抖动
-   5          //可以理解为如果按键按下后20ms内没有松开就认为是有效按键
-   6          /*
-   7          *@brief 混合键盘按键扫描函数
-   8          *@return 返回按键值，未按下返回-1
-   9          */
-  10          
-  11          char Mix_key_num()
-  12          {
-  13   1          char key_num = -1;
-  14   1      
-  15   1          P1 = 0xFF;                     // 让P1端口全部输出高电平
-  16   1          //检测第一列按键
-  17   1          P1_3 = 0;                    // 让P1.3输出低电平
-  18   1          if(P1_7 == 0){Delayms(20);while(P1_7 == 0);Delayms(20);key_num = 1;} // 检测P1.7按键
-  19   1          if(P1_6 == 0){Delayms(20);while(P1_6 == 0);Delayms(20);key_num = 4;} // 检测P1.5按键
-  20   1          if(P1_5== 0){Delayms(20);while(P1_5 == 0);Delayms(20);key_num = 7;} // 检测P1.9按键
-  21   1          P1 = 0xFF; 
-  22   1          //检测第二列按键
-  23   1          P1_2 = 0;                    // 让P1.2输出低电平
-  24   1          if(P1_7 == 0){Delayms(20);while(P1_7 == 0);Delayms(20);key_num = 2;} // 检测P1.7按键
-  25   1          if(P1_6 == 0){Delayms(20);while(P1_6 == 0);Delayms(20);key_num = 5;} // 检测P1.6按键
-  26   1          if(P1_5 == 0){Delayms(20);while(P1_5 == 0);Delayms(20);key_num = 8;} // 检测P1.5按键
-  27   1          if(P1_4 == 0){Delayms(20);while(P1_4 == 0);Delayms(20);key_num = 0;} // 检测P1.4按键
-  28   1          P1 = 0xFF; 
-  29   1          //检测第三列按键
-  30   1          P1_1 = 0;                    // 让P1.1输出低电平
-  31   1          if(P1_7 == 0){Delayms(20);while(P1_7 == 0);Delayms(20);key_num = 3;} // 检测P1.7按键
-  32   1          if(P1_6 == 0){Delayms(20);while(P1_6 == 0);Delayms(20);key_num = 6;} // 检测P1.6按键
-  33   1          if(P1_5 == 0){Delayms(20);while(P1_5 == 0);Delayms(20);key_num = 9;} // 检测P1.5按键
-  34   1          P1 = 0xFF;
-  35   1          //检测第四列按键
-  36   1          P1_0 = 0;                    // 让P1.0输出低电平
-  37   1          if(P1_7 == 0){Delayms(20);while(P1_7 == 0);Delayms(20);key_num = 11;} // 检测P1.7按键
-  38   1          if(P1_6 == 0){Delayms(20);while(P1_6 == 0);Delayms(20);key_num = 12;} // 检测P1.6按键
-  39   1          if(P1_5 == 0){Delayms(20);while(P1_5 == 0);Delayms(20);key_num = 13;} // 检测P1.5按键
-  40   1          P1 = 0xFF;
-  41   1      
-  42   1          return key_num;
-  43   1      }
+   4          sbit Buzzer=P2^5;
+   5          
+   6          //还是会想补一句，while，delay的用法是为了防止按键抖动
+   7          //可以理解为如果按键按下后20ms内没有松开就认为是有效按键
+   8          /*
+   9          *@brief 混合键盘按键扫描函数
+  10          *@return 返回按键值，未按下返回-1
+  11          */
+  12          
+  13          char Mix_key_num()
+  14          {
+  15   1          char key_num = -1,i;
+  16   1      
+  17   1          P1 = 0xFF;                     // 让P1端口全部输出高电平
+  18   1          //检测第一列按键
+  19   1          P1_3 = 0;                    // 让P1.3输出低电平
+  20   1          if(P1_7 == 0){Delayms(20);while(P1_7 == 0);Delayms(20);
+  21   2              for(i=0;i<100;i++)
+  22   2            {
+  23   3              Buzzer=!Buzzer;
+  24   3              Delayms(1);
+  25   3            }
+  26   2              key_num = 1;} // 检测P1.7按键
+  27   1          if(P1_6 == 0){Delayms(20);while(P1_6 == 0);Delayms(20);
+  28   2              for(i=0;i<100;i++)
+  29   2            {
+  30   3              Buzzer=!Buzzer;
+  31   3              Delayms(1);
+  32   3            }
+  33   2              key_num = 4;} // 检测P1.5按键
+  34   1          if(P1_5== 0){Delayms(20);while(P1_5 == 0);Delayms(20);
+  35   2              for(i=0;i<100;i++)
+  36   2            {
+  37   3              Buzzer=!Buzzer;
+  38   3              Delayms(1);
+  39   3            }
+  40   2              key_num = 7;} // 检测P1.9按键
+  41   1          P1 = 0xFF; 
+  42   1          //检测第二列按键
+  43   1          P1_2 = 0;                    // 让P1.2输出低电平
+  44   1          if(P1_7 == 0){Delayms(20);while(P1_7 == 0);Delayms(20);
+  45   2              for(i=0;i<100;i++)
+  46   2            {
+  47   3              Buzzer=!Buzzer;
+  48   3              Delayms(1);
+  49   3            }
+  50   2              key_num = 2;} // 检测P1.7按键
+  51   1          if(P1_6 == 0){Delayms(20);while(P1_6 == 0);Delayms(20);
+  52   2              for(i=0;i<100;i++)
+  53   2            {
+  54   3              Buzzer=!Buzzer;
+C51 COMPILER V9.60.7.0   MIXTRI_KEYBOARD                                                   10/19/2025 00:42:38 PAGE 2   
+
+  55   3              Delayms(1);
+  56   3            }
+  57   2              key_num = 5;} // 检测P1.6按键
+  58   1          if(P1_5 == 0){Delayms(20);while(P1_5 == 0);Delayms(20);
+  59   2              for(i=0;i<100;i++)
+  60   2            {
+  61   3              Buzzer=!Buzzer;
+  62   3              Delayms(1);
+  63   3            }
+  64   2              key_num = 8;} // 检测P1.5按键
+  65   1          if(P1_4 == 0){Delayms(20);while(P1_4 == 0);Delayms(20);
+  66   2              for(i=0;i<100;i++)
+  67   2            {
+  68   3              Buzzer=!Buzzer;
+  69   3              Delayms(1);
+  70   3            }
+  71   2              key_num = 0;} // 检测P1.4按键
+  72   1          P1 = 0xFF; 
+  73   1          //检测第三列按键
+  74   1          P1_1 = 0;                    // 让P1.1输出低电平
+  75   1          if(P1_7 == 0){Delayms(20);while(P1_7 == 0);Delayms(20);
+  76   2              for(i=0;i<100;i++)
+  77   2            {
+  78   3              Buzzer=!Buzzer;
+  79   3              Delayms(1);
+  80   3            }
+  81   2              key_num = 3;} // 检测P1.7按键
+  82   1          if(P1_6 == 0){Delayms(20);while(P1_6 == 0);Delayms(20);
+  83   2              for(i=0;i<100;i++)
+  84   2            {
+  85   3              Buzzer=!Buzzer;
+  86   3              Delayms(1);
+  87   3            }
+  88   2              key_num = 6;} // 检测P1.6按键
+  89   1          if(P1_5 == 0){Delayms(20);while(P1_5 == 0);Delayms(20);
+  90   2              for(i=0;i<100;i++)
+  91   2            {
+  92   3              Buzzer=!Buzzer;
+  93   3              Delayms(1);
+  94   3            }
+  95   2              key_num = 9;} // 检测P1.5按键
+  96   1          P1 = 0xFF;
+  97   1          //检测第四列按键
+  98   1          P1_0 = 0;                    // 让P1.0输出低电平
+  99   1          if(P1_7 == 0){Delayms(20);while(P1_7 == 0);Delayms(20);
+ 100   2              for(i=0;i<100;i++)
+ 101   2            {
+ 102   3              Buzzer=!Buzzer;
+ 103   3              Delayms(1);
+ 104   3            }
+ 105   2              key_num = 11;} // 检测P1.7按键
+ 106   1          if(P1_6 == 0){Delayms(20);while(P1_6 == 0);Delayms(20);
+ 107   2              for(i=0;i<100;i++)
+ 108   2            {
+ 109   3              Buzzer=!Buzzer;
+ 110   3              Delayms(1);
+ 111   3            }
+ 112   2              key_num = 12;} // 检测P1.6按键
+ 113   1          if(P1_5 == 0){Delayms(20);while(P1_5 == 0);Delayms(20);
+ 114   2              for(i=0;i<100;i++)
+ 115   2            {
+ 116   3              Buzzer=!Buzzer;
+C51 COMPILER V9.60.7.0   MIXTRI_KEYBOARD                                                   10/19/2025 00:42:38 PAGE 3   
+
+ 117   3              Delayms(1);
+ 118   3            }
+ 119   2              key_num = 13;} // 检测P1.5按键
+ 120   1          P1 = 0xFF;
+ 121   1      
+ 122   1          return key_num;
+ 123   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    328    ----
+   CODE SIZE        =    627    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =   ----       1
+   DATA SIZE        =   ----       2
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
-
-C51 COMPILER V9.60.7.0   MIXTRI_KEYBOARD                                                   10/18/2025 20:33:34 PAGE 2   
 
 
 C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

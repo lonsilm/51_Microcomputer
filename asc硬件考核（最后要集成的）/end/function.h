@@ -20,5 +20,6 @@ void control_matrix_led();
 void lcd_display();
 void ad_read_function();
 void uartuser();
+void smg_display_time();
 
 #endif

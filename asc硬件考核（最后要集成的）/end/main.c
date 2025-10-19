@@ -37,12 +37,16 @@ void main()
         {
             uartuser();
         }
+        else if(mode==7)
+        {
+            show_i_love_asc();
+        }
         key_state=Key();
         if(key_state==1)
         {
             mode++;
 			LCD_Init();
-            if(mode>=7)
+            if(mode>=8)
             {
                 mode=0;
             }
